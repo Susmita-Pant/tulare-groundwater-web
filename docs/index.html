@@ -69,13 +69,13 @@
     </section>
     <section class="group"><h2>Wells</h2>
       <label class="chk"><input type="checkbox" id="showWells" checked> Show wells</label>
-      <label class="chk"><input type="checkbox" id="matchClasses" checked> Match well classes to the aquifer shown</label>
+      <label class="chk"><input type="checkbox" id="matchClasses"> Match well classes to the aquifer shown</label>
       <div class="classes">
-        <label class="chk c-confined"><input type="checkbox" data-cls="Confined"> Confined</label>
-        <label class="chk c-semi"><input type="checkbox" data-cls="Semi-confined"> Semi-confined</label>
-        <label class="chk c-unconfined"><input type="checkbox" data-cls="Unconfined"> Unconfined</label>
+        <label class="chk c-confined"><input type="checkbox" data-cls="Confined" checked> Confined</label>
+        <label class="chk c-semi"><input type="checkbox" data-cls="Semi-confined" checked> Semi-confined</label>
+        <label class="chk c-unconfined"><input type="checkbox" data-cls="Unconfined" checked> Unconfined</label>
       </div>
-      <label class="chk"><input type="checkbox" id="onlyObserved" checked> Only wells observed for this map</label>
+      <label class="chk"><input type="checkbox" id="onlyObserved"> Only wells observed for this map</label>
       <div class="row"><label class="lbl w">Colour wells by</label><select id="wellColor"><option value="class">Aquifer class</option><option value="value">Observed value (map colours)</option></select></div>
       <div class="row"><label class="lbl w">Marker size</label><input type="range" id="msize" min="2" max="9" value="4"></div>
       <div class="row"><label class="lbl w">Nearby radius</label><select id="radius"><option>1</option><option>2</option><option selected>3</option><option>5</option><option>10</option></select><span class="unit">km</span></div>
