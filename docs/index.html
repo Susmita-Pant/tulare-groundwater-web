@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tulare Basin Groundwater Explorer</title>
+<meta name="description" content="Interactive maps, hydrographs, basin statistics and storage change for the confined and unconfined aquifers of the southern San Joaquin Valley (Tulare Basin), California, 1971–2023.">
+<link rel="stylesheet" href="vendor/leaflet.css">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <div class="eyebrow">Southern San Joaquin Valley, California · 1971–2023</div>
+    <h1>Tulare Basin Groundwater Explorer</h1>
+  </div>
+  <nav class="tabs" role="tablist">
+    <button class="tab active" data-tab="map" role="tab">Map and hydrograph</button>
+    <button class="tab" data-tab="summary" role="tab">Basin summary</button>
+    <button class="tab" data-tab="storage" role="tab">Storage change</button>
+    <button class="tab" data-tab="report" role="tab">Data report</button>
+  </nav>
+  <button id="helpBtn" class="btn secondary" title="Show or hide the quick guide">How to use ▾</button>
+</header>
+
+<section id="help" class="help" hidden>
+  <div class="help-grid">
+    <div><h3>1 · Choose what to map</h3><p><b>Absolute groundwater head</b> is the elevation of the water level (feet or metres above sea level). <b>Cumulative head change</b> is head in the selected year minus head in a base year: <span class="neg">negative = water level fell</span>, <span class="pos">positive = rose</span>. Pick the <b>confined</b> (deep, below the Corcoran Clay) or <b>unconfined</b> (shallow) aquifer.</p></div>
+    <div><h3>2 · Move through time</h3><p>Drag the <b>Year</b> slider or press <b>Play</b>. For change maps, set the <b>Base year</b>. The <b>provided 1971–2023 change</b> is a fixed-period product, so it has no year control.</p></div>
+    <div><h3>3 · Click the map</h3><p>Click anywhere for a <b>hydrograph</b>: lines are the interpolated surfaces at that 500 m cell; dots are <b>observed</b> wells nearby. Click a <b>well marker</b> to highlight its record and see its <b>well profile</b> (screens, depth, Corcoran Clay reference).</p></div>
+    <div><h3>4 · Compare and download</h3><p><b>Basin summary</b> compares confined and unconfined statistics for the whole area or one subbasin. <b>Storage change</b> shows regional totals since 2015. Every view has download buttons (CSV, image, grid).</p></div>
+  </div>
+</section>
+
+<div id="loading" class="loading"><div class="spinner"></div><div id="loadingText">Loading…</div></div>
+
+<!-- =========================== MAP TAB =========================== -->
+<main id="tab-map" class="tabpanel active">
+  <aside class="side" id="side">
+    <section class="group"><h2>Surface</h2>
+      <label class="lbl">Product</label>
+      <select id="product" title="What the map shows">
+        <option value="head">Absolute groundwater head</option>
+        <option value="cumulative">Cumulative head change (base year → selected year)</option>
+        <option value="sum">Provided cumulative head change (1971–2023)</option>
+      </select>
+      <div class="row"><label class="lbl w">Aquifer</label>
+        <select id="aquifer"><option value="confined">Confined</option><option value="unconfined">Unconfined</option></select></div>
+    </section>
+    <section class="group"><h2>Time</h2>
+      <div id="fixedPeriod" class="fixed" hidden>Fixed period: 1971–2023</div>
+      <div id="timeBox">
+        <div class="row"><input type="range" id="year" min="1971" max="2023" value="2015" step="1"><input type="number" id="yearNum" min="1971" max="2023" value="2015"></div>
+        <div class="row" id="baseRow" hidden><label class="lbl w" title="The base year cannot be later than the selected year">Base year</label><input type="number" id="base" min="1971" max="2015" value="1971"></div>
+        <div class="row"><button id="play" class="btn">▶ Play</button><select id="speed" title="Animation speed"><option value="900">Slow</option><option value="500" selected>Normal</option><option value="250">Fast</option></select></div>
+      </div>
+    </section>
+    <section class="group"><h2>Display</h2>
+      <div class="row"><label class="lbl w">Units</label><select id="units"><option value="ft">feet</option><option value="m">metres</option></select></div>
+      <div class="row"><label class="lbl w">Colour map</label><select id="cmap"></select></div>
+      <label class="chk"><input type="checkbox" id="robust" checked> Clip colours to 2nd–98th percentile</label>
+      <label class="chk"><input type="checkbox" id="fixedRange" checked> Keep colour range fixed across years</label>
+      <div class="row"><label class="lbl w">Surface opacity</label><input type="range" id="opacity" min="30" max="100" value="85"></div>
+    </section>
+    <section class="group"><h2>Map layers</h2>
+      <div class="row"><label class="lbl w">Background</label><select id="basemap"><option value="osm" selected>OpenStreetMap</option><option value="none">None</option></select></div>
+      <label class="chk"><input type="checkbox" id="basins" checked> Subbasin outlines</label>
+      <label class="chk"><input type="checkbox" id="basinNames" checked> Subbasin names</label>
+    </section>
+    <section class="group"><h2>Wells</h2>
+      <label class="chk"><input type="checkbox" id="showWells" checked> Show wells</label>
+      <label class="chk"><input type="checkbox" id="matchClasses" checked> Match well classes to the aquifer shown</label>
+      <div class="classes">
+        <label class="chk c-confined"><input type="checkbox" data-cls="Confined"> Confined</label>
+        <label class="chk c-semi"><input type="checkbox" data-cls="Semi-confined"> Semi-confined</label>
+        <label class="chk c-unconfined"><input type="checkbox" data-cls="Unconfined"> Unconfined</label>
+      </div>
+      <label class="chk"><input type="checkbox" id="onlyObserved" checked> Only wells observed for this map</label>
+      <div class="row"><label class="lbl w">Colour wells by</label><select id="wellColor"><option value="class">Aquifer class</option><option value="value">Observed value (map colours)</option></select></div>
+      <div class="row"><label class="lbl w">Marker size</label><input type="range" id="msize" min="2" max="9" value="4"></div>
+      <div class="row"><label class="lbl w">Nearby radius</label><select id="radius"><option>1</option><option>2</option><option selected>3</option><option>5</option><option>10</option></select><span class="unit">km</span></div>
+    </section>
+    <section class="group"><h2>Download</h2>
+      <div class="btns">
+        <button class="btn secondary" id="dlPoint" title="Hydrograph values at the selected point (CSV)">Point series (CSV)</button>
+        <button class="btn secondary" id="dlMapPng" title="The current map layer with title and colour bar (PNG)">Map image (PNG)</button>
+        <button class="btn secondary" id="dlGrid" title="Current map values on the original 500 m grid, ESRI ASCII grid + .prj (opens in QGIS/ArcGIS)">Map values (GIS grid)</button>
+      </div>
+    </section>
+  </aside>
+
+  <section class="mapcol">
+    <div class="maptitle"><span id="mapTitle">Loading map…</span></div>
+    <div id="map"></div>
+    <div id="mapStats" class="hint"></div>
+  </section>
+
+  <section class="rightcol">
+    <div class="card hydro">
+      <div id="hydro" class="plot"><div class="empty">Click the map or a well to see<br>its hydrograph here.</div></div>
+    </div>
+    <div class="card details">
+      <div class="subtabs"><button class="subtab active" data-sub="point">Point details</button><button class="subtab" data-sub="well">Well profile</button></div>
+      <div id="sub-point" class="subpanel active"><div class="hint pad">Click any point on the map to compare the confined and unconfined surfaces there through time and to see which subbasin it lies in. Click a well marker to add its observed record and open its well profile.</div></div>
+      <div id="sub-well" class="subpanel"><div class="hint pad">Click a well marker on the map to see its construction schematic.</div></div>
+    </div>
+  </section>
+</main>
+
+<!-- =========================== BASIN SUMMARY =========================== -->
+<main id="tab-summary" class="tabpanel">
+  <div class="toolbar">
+    <div class="row"><label class="lbl">Spatial scope</label><select id="scope"></select>
+      <label class="lbl" style="margin-left:14px">Units</label><select id="unitsSummary"><option value="ft">feet</option><option value="m">metres</option></select></div>
+    <div class="btns"><button class="btn secondary" id="dlStats">Save statistics (CSV)</button></div>
+  </div>
+  <div id="summaryPlot" class="plot big"></div>
+  <p id="summaryNote" class="hint pad"></p>
+</main>
+
+<!-- =========================== STORAGE =========================== -->
+<main id="tab-storage" class="tabpanel">
+  <div class="toolbar">
+    <div class="row"><span class="fixed">Regional groundwater storage change since 2015</span>
+      <label class="lbl" style="margin-left:18px">Year</label><input type="range" id="sYear" min="2015" max="2023" value="2023"><input type="number" id="sYearNum" min="2015" max="2023" value="2023">
+      <button class="btn" id="sPlay">▶ Play</button></div>
+  </div>
+  <div class="cards" id="sCards"></div>
+  <div class="storage-grid">
+    <div class="card"><div id="sSeries" class="plot"></div></div>
+    <div class="card">
+      <div class="subtabs"><button class="subtab active" data-ssub="bar">Selected year</button><button class="subtab" data-ssub="table">Table (all years)</button></div>
+      <div id="ssub-bar" class="subpanel active"><div id="sBar" class="plot"></div></div>
+      <div id="ssub-table" class="subpanel"><div class="tablewrap"><table id="sTable"></table></div></div>
+    </div>
+  </div>
+  <div class="toolbar bottom">
+    <p class="hint">Signed storage change in km³ since 2015 (negative = storage decrease), regional totals from <code>storage_depletion_2015_2023.xlsx</code>. Confined total = water expansion + matrix compaction; combined total adds the unconfined change (range: specific yield Sy = 0.1 to 0.3). Aquifer-matrix compaction is a storage loss linked to land subsidence, but these values are volumes of water, not ground-surface lowering.</p>
+    <div class="btns"><button class="btn secondary" id="dlStorage">Save table (CSV)</button></div>
+  </div>
+</main>
+
+<!-- =========================== REPORT =========================== -->
+<main id="tab-report" class="tabpanel"><div id="report" class="report"></div></main>
+
+<footer class="foot">Interpolated head surfaces, well observations and storage estimates: Tulare Basin groundwater research project. Map data © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap contributors</a>. Built with Leaflet, Plotly and proj4js.</footer>
+
+<script src="vendor/leaflet.js"></script>
+<script src="vendor/proj4.js"></script>
+<script src="vendor/plotly-basic.min.js" defer></script>
+<script src="js/core.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

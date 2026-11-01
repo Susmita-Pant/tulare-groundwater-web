@@ -1,0 +1,68 @@
+TIMING first map 1168 ms, wells+observations ready 1579 ms (local server)
+[PASS] tulare_lake_cell: click position → Albers  (2.10e-7 m from the desktop coordinate)
+[PASS] tulare_lake_cell: confined 53-year hydrograph equals the desktop series  (0 of 53 differ)
+[PASS] tulare_lake_cell: unconfined 53-year hydrograph equals the desktop series  (0 of 53 differ)
+[PASS] tulare_lake_cell: subbasin  (Tulare Lake vs Tulare Lake)
+[PASS] tulare_lake_cell: nearby wells (≤ 3 km)  (7 wells)
+[PASS] tulare_lake_cell: provided 1971–2023 confined value  (-141.3645782470703 vs -141.3645782470703)
+[PASS] tulare_lake_cell: provided 1971–2023 unconfined value  (-54.33521270751953 vs -54.33521270751953)
+TIMING tulare_lake_cell: click → hydrograph + details 225 ms
+[PASS] kern_cell: click position → Albers  (2.17e-7 m from the desktop coordinate)
+[PASS] kern_cell: confined 53-year hydrograph equals the desktop series  (0 of 53 differ)
+[PASS] kern_cell: unconfined 53-year hydrograph equals the desktop series  (0 of 53 differ)
+[PASS] kern_cell: subbasin  (Kern County vs Kern County)
+[PASS] kern_cell: nearby wells (≤ 3 km)  (1 wells)
+[PASS] kern_cell: provided 1971–2023 confined value  (-141.64329528808594 vs -141.64329528808594)
+[PASS] kern_cell: provided 1971–2023 unconfined value  (-77.64350891113281 vs -77.64350891113281)
+TIMING kern_cell: click → hydrograph + details 279 ms
+[PASS] unconfined_only_east: click position → Albers  (2.14e-7 m from the desktop coordinate)
+[PASS] unconfined_only_east: confined 53-year hydrograph equals the desktop series  (0 of 53 differ)
+[PASS] unconfined_only_east: unconfined 53-year hydrograph equals the desktop series  (0 of 53 differ)
+[PASS] unconfined_only_east: subbasin  (null vs null)
+[PASS] unconfined_only_east: nearby wells (≤ 3 km)  (0 wells)
+[PASS] unconfined_only_east: provided 1971–2023 confined value  (null vs null)
+[PASS] unconfined_only_east: provided 1971–2023 unconfined value  (null vs null)
+TIMING unconfined_only_east: click → hydrograph + details 262 ms
+[PASS] well: click position → Albers  (5.27e-4 m from the desktop coordinate)
+[PASS] well: confined 53-year hydrograph equals the desktop series  (0 of 53 differ)
+[PASS] well: unconfined 53-year hydrograph equals the desktop series  (0 of 53 differ)
+[PASS] well: subbasin  (White Wolf vs White Wolf)
+[PASS] well: nearby wells (≤ 3 km)  (12 wells)
+[PASS] well: provided 1971–2023 confined value  (-24.796619415283203 vs -24.796619415283203)
+[PASS] well: provided 1971–2023 unconfined value  (13.09963321685791 vs 13.09963321685791)
+TIMING well: click → hydrograph + details 510 ms
+[PASS] outside: click position → Albers  (2.10e-7 m from the desktop coordinate)
+[PASS] outside: confined 53-year hydrograph equals the desktop series  (0 of 53 differ)
+[PASS] outside: unconfined 53-year hydrograph equals the desktop series  (0 of 53 differ)
+[PASS] outside: subbasin  (null vs null)
+[PASS] outside: nearby wells (≤ 3 km)  (0 wells)
+[PASS] outside: provided 1971–2023 confined value  (null vs null)
+[PASS] outside: provided 1971–2023 unconfined value  (null vs null)
+TIMING outside: click → hydrograph + details 284 ms
+[PASS] map head confined 2015 (ft): cells, mean, median, min, max, declines  (n 51814/51814, mean 21.6075/21.6075, median -3.9942/-3.9942)
+[PASS] map head confined 2015 (m): cells, mean, median, min, max, declines  (n 51814/51814, mean 6.5860/6.5860, median -1.2174/-1.2174)
+[PASS] map head unconfined 1990 (ft): cells, mean, median, min, max, declines  (n 74241/74241, mean 194.5851/194.5851, median 185.8181/185.8181)
+[PASS] map head unconfined 1990 (m): cells, mean, median, min, max, declines  (n 74241/74241, mean 59.3095/59.3095, median 56.6373/56.6373)
+[PASS] map cumulative unconfined 2010 base 1980 (ft): cells, mean, median, min, max, declines  (n 74241/74241, mean -14.3415/-14.3415, median -17.4675/-17.4675)
+[PASS] map cumulative unconfined 2010 base 1980 (m): cells, mean, median, min, max, declines  (n 74241/74241, mean -4.3713/-4.3713, median -5.3241/-5.3241)
+[PASS] map cumulative confined 2023 base 1971 (ft): cells, mean, median, min, max, declines  (n 51814/51814, mean -98.9373/-98.9373, median -96.6818/-96.6818)
+[PASS] map cumulative confined 2023 base 1971 (m): cells, mean, median, min, max, declines  (n 51814/51814, mean -30.1561/-30.1561, median -29.4686/-29.4686)
+[PASS] map sum confined  (ft): cells, mean, median, min, max, declines  (n 51814/51814, mean -98.9373/-98.9373, median -96.6818/-96.6818)
+[PASS] map sum confined  (m): cells, mean, median, min, max, declines  (n 51814/51814, mean -30.1561/-30.1561, median -29.4686/-29.4686)
+TIMING year switch (first time, includes download): 360, 396, 324, 332, 390 ms
+TIMING year switch (already loaded): 303, 374, 342 ms
+TIMING aquifer switch to unconfined (first time): 454 ms
+[PASS] well profile and card shown for a clicked well
+[PASS] real mouse click on the map selects that location  (35.9999, -119.6004)
+[PASS] provided 1971–2023 product hides year controls and shows the fixed period
+TIMING Basin summary first draw: 907 ms
+[PASS] Basin summary statistics equal the desktop values (all scopes, both aquifers, head and change)  (7632/7632 values identical)
+TIMING Basin summary scope switch: 162 ms
+[PASS] Basin summary has eight panels  (8)
+TIMING Storage tab first draw: 362 ms
+[PASS] Storage values and totals equal the desktop values (2015–2023)  (0 differences)
+[PASS] Storage cards show 2023 combined total −11.57 km³
+[PASS] no JavaScript errors during the session
+MEMORY JavaScript heap after the full session: 47 MB
+
+53 passed, 0 failed

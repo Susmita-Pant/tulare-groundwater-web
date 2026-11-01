@@ -1,0 +1,11 @@
+# Only needed to REBUILD the website data from the original project files.
+# The website itself needs nothing installed.
+# Recommended (Anaconda Prompt): conda install -c conda-forge rasterio geopandas openpyxl matplotlib
+numpy
+pandas
+matplotlib
+rasterio
+geopandas
+shapely
+pyproj
+openpyxl

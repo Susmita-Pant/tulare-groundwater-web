@@ -1,0 +1,6 @@
+{
+  "name": "tulare-web-validation",
+  "private": true,
+  "description": "Headless-browser validation of the web app against the desktop version 3 code",
+  "dependencies": { "puppeteer-core": "^23", "@sparticuz/chromium": "^131" }
+}
