@@ -7,9 +7,7 @@ basin statistics and regional storage change. It runs entirely in the visitor's
 browser, so it can be hosted **free on GitHub Pages**: no server, no sleeping, nothing
 to install.
 
-It is a web conversion of the **desktop Tulare Basin Groundwater Head Explorer,
-version 3**. Its numbers were checked against that desktop code (see
-`VALIDATION_AND_PERFORMANCE.md`).
+
 
 ![Map and hydrograph](screenshots/04_cumulative.png)
 
@@ -167,5 +165,4 @@ Works in current Chrome, Edge, Firefox and Safari on laptops and desktops.
 - **Map background:** © OpenStreetMap contributors.
 - **Bundled libraries:** Leaflet (BSD-2), Plotly.js (MIT) and proj4js (MIT). Their
   licences are in `docs/vendor/`.
-- **Choose a licence for your own code and data** (for example MIT for code, CC-BY
-  for data) with your advisor before making the repository public.
+- 
